@@ -6,15 +6,15 @@ provider "softlayer" {
     api_key = "${var.api_key}"
 }
 
-data "softlayer_ssh_key" "kube-key" {
-    name = "kube-key"
+resource "softlayer_ssh_key" "test-key" {
+    name = "test-key"
     public_key = "${file("terraform-test.pub")}"
 }
 
 resource "softlayer_virtual_guest" "terraform-test-01" {
     name = "test-01"
     domain = "example.com"
-    ssh_keys = ["${data.softlayer_ssh_key.kube-key.id}"]
+    ssh_keys = ["${softlayer_ssh_key.test-key.id}"]
     image = "UBUNTU_14_64"
     region = "mex01"
     local_disk = true
